@@ -8,4 +8,5 @@ Diagnostics:
   MissingIncludes: Strict
   # UnusedIncludes: None
 
-
+  # note: To suppress "unused-includes", add `// IWYU pragma: export` to line
+  #   see: https://clangd.llvm.org/design/include-cleaner#iwyu-pragmas
