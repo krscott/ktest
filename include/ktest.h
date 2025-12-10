@@ -76,6 +76,7 @@ struct ktest_state
     bool done;
     bool prev_fail;
     char const *prev_name;
+    char const *first_failed_test_name;
     int test_count;
     int fail_count;
 };
@@ -103,6 +104,10 @@ static inline void ktest_complete_test(struct ktest_state *const state)
     {
         if (state->prev_fail)
         {
+            if (!state->first_failed_test_name)
+            {
+                state->first_failed_test_name = state->prev_name;
+            }
             ++(state->fail_count);
 
             ktest_infof(
@@ -203,7 +208,14 @@ static inline int ktest_end(struct ktest_state const *const state)
         case KTEST_CMD_RUN_ALL:
         case KTEST_CMD_RUN_ONE:
             ktest_infof("%s", "");
-            ktest_infof("Failures: %d", state->fail_count);
+            if (state->first_failed_test_name)
+            {
+                ktest_infof(
+                    "First failed test: %s",
+                    state->first_failed_test_name
+                );
+            }
+            ktest_infof("Total failures: %d", state->fail_count);
             break;
         case KTEST_CMD_LIST:
             break;

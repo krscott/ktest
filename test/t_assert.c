@@ -1,5 +1,7 @@
 #include "kcli.h"
 #include "ktest.h"
+#include <assert.h>
+#include <string.h>
 
 static void ktest__main(struct ktest_state *ktest_state);
 
@@ -13,7 +15,11 @@ int main(void)
 
     int result = ktest_end(&state);
 
-    return (result == 1) ? 0 : 1;
+    assert(result == 1);
+    assert(
+        state.first_failed_test_name &&
+        0 == strcmp(state.first_failed_test_name, "t_fail")
+    );
 }
 
 static void ktest__main(struct ktest_state *ktest_state)
