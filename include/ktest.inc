@@ -1,5 +1,8 @@
-#include "kcli.inc"
-#include "ktest.h"
+#include "ktest.h" // IWYU pragma: export
+
+#include "kcli.inc" // IWYU pragma: export
+#include <stdio.h>
+#include <string.h>
 
 struct ktest_opts
 ktest_opts_parse(int const argc, char const *const *const argv)

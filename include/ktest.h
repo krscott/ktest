@@ -1,11 +1,9 @@
 #ifndef KTEST_H_
 #define KTEST_H_
 
-#include "kcli.h"
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 
 enum ktest_cmd
 {
