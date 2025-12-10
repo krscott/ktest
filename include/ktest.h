@@ -125,9 +125,10 @@ static inline void ktest_complete_test(struct ktest_state *const state)
                 state->prev_name
             );
         }
-
-        state->prev_name = NULL;
     }
+
+    state->prev_name = NULL;
+    state->prev_fail = false;
 }
 
 static inline bool
@@ -195,6 +196,22 @@ static inline void ktest_assert_fail(
     ktest_infof("%s", msg);
 }
 
+static inline int ktest_end(struct ktest_state const *const state)
+{
+    switch (state->opts.cmd)
+    {
+        case KTEST_CMD_RUN_ALL:
+        case KTEST_CMD_RUN_ONE:
+            ktest_infof("%s", "");
+            ktest_infof("Failures: %d", state->fail_count);
+            break;
+        case KTEST_CMD_LIST:
+            break;
+    }
+
+    return state->fail_count > 0;
+}
+
 #define KTEST_MAIN                                                             \
     static void ktest__main(struct ktest_state *ktest_state);                  \
                                                                                \
@@ -204,18 +221,7 @@ static inline void ktest_assert_fail(
                                                                                \
         ktest__main(&state);                                                   \
                                                                                \
-        switch (state.opts.cmd)                                                \
-        {                                                                      \
-            case KTEST_CMD_RUN_ALL:                                            \
-            case KTEST_CMD_RUN_ONE:                                            \
-                ktest_infof("%s", "");                                         \
-                ktest_infof("Failures: %d", state.fail_count);                 \
-                break;                                                         \
-            case KTEST_CMD_LIST:                                               \
-                break;                                                         \
-        }                                                                      \
-                                                                               \
-        return state.fail_count > 0;                                           \
+        return ktest_end(&state);                                              \
     }                                                                          \
                                                                                \
     static void ktest__main(struct ktest_state *ktest_state)
