@@ -98,6 +98,8 @@ struct ktest_state
         fflush(stdout);                                                        \
     } while (0)
 
+#define ktest_info(msg) ktest_infof("%s", msg)
+
 static inline void ktest_complete_test(struct ktest_state *const state)
 {
     if (state->prev_name)
@@ -189,18 +191,6 @@ ktest_define_test(struct ktest_state *const state, char const *const name)
     return run_this;
 }
 
-static inline void ktest_assert_fail(
-    struct ktest_state *const state,
-    char const *const msg,
-    char const *const filename,
-    int const line
-)
-{
-    state->prev_fail = true;
-    ktest_infof("Assert failed: %s:%d", filename, line);
-    ktest_infof("%s", msg);
-}
-
 static inline int ktest_end(struct ktest_state const *const state)
 {
     switch (state->opts.cmd)
@@ -244,16 +234,68 @@ static inline int ktest_end(struct ktest_state const *const state)
     (void)test_name;                                                           \
     while (ktest_define_test(ktest_state, #test_name))
 
+static inline void ktest_assert_fail(
+    struct ktest_state *const state, char const *const filename, int const line
+)
+{
+    state->prev_fail = true;
+    ktest_infof("Assert %s:%d", filename, line);
+}
+
 #define ASSERT_TRUE(cond)                                                      \
     {                                                                          \
         if (!(cond))                                                           \
         {                                                                      \
-            ktest_assert_fail(                                                 \
-                ktest_state,                                                   \
-                "  `" #cond "`",                                               \
-                __FILE__,                                                      \
-                __LINE__                                                       \
-            );                                                                 \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_infof("  Condition failed: `%s`", cond);                     \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
+static inline void ktest_str_cmp(char const *left, char const *right)
+{
+    if (left)
+    {
+        ktest_infof("    Left : %s", left);
+    }
+    else
+    {
+        ktest_info("    Left is NULL");
+    }
+    if (right)
+    {
+        ktest_infof("    Right: %s", right);
+    }
+    else
+    {
+        ktest_info("    Right is NULL");
+    }
+}
+
+#define ASSERT_STR_EQ(left, right)                                             \
+    {                                                                          \
+        char const *left_ = (left);                                            \
+        char const *right_ = (right);                                          \
+        if (!left_ || !right_ || 0 != strcmp(left_, right_))                   \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected equal strings:");                           \
+            ktest_str_cmp(left_, right_);                                      \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
+#define ASSERT_STR_NEQ(left, right)                                            \
+    {                                                                          \
+        char const *left_ = (left);                                            \
+        char const *right_ = (right);                                          \
+        if (!left_ || !right_ || 0 == strcmp(left_, right_))                   \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected unequal strings:");                         \
+            ktest_str_cmp(left_, right_);                                      \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
