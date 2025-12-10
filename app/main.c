@@ -1,5 +1,5 @@
-#include "ktest.h"
 #include "kcli.h"
+#include "ktest.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
