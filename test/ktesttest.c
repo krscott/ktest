@@ -1,4 +1,4 @@
-#include "cstart.h"
+#include "ktest.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +10,7 @@
 
 static void t_greet_name(void)
 {
-    char *greeting = cstart_create_greeting("Kris");
+    char *greeting = ktest_create_greeting("Kris");
     assert(greeting);
 
     assert(0 == strcmp(greeting, "Hello, Kris!"));
@@ -20,7 +20,7 @@ static void t_greet_name(void)
 
 static void t_greet_null(void)
 {
-    char *greeting = cstart_create_greeting(NULL);
+    char *greeting = ktest_create_greeting(NULL);
     assert(greeting);
 
     assert(0 == strcmp(greeting, "Hello, World!"));

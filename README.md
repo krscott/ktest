@@ -1,4 +1,4 @@
-# c-start
+# ktest
 
 My rather opinionated C project template.
 

@@ -1,5 +1,5 @@
-add_library(cstart cstart.c)
+add_library(ktest ktest.c)
 
-target_include_directories(cstart PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(ktest PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-install(TARGETS cstart)
+install(TARGETS ktest)

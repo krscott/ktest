@@ -1,10 +1,10 @@
-#include "cstart.h"
+#include "ktest.h"
 #include "ktl/lib/strings.h"
 #include "ktl/lib/strings.inc"
 #include <assert.h>
 #include <stddef.h>
 
-char *cstart_create_greeting(char const *const name)
+char *ktest_create_greeting(char const *const name)
 {
     struct strbuf s = {0};
 

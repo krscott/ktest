@@ -1,4 +1,4 @@
-#include "cstart.h"
+#include "ktest.h"
 #include "kcli.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -40,10 +40,10 @@ int main(int const argc, char const *const *const argv)
 
     if (opts.verbose)
     {
-        fprintf(stderr, "c-start: Creating greeting...\n");
+        fprintf(stderr, "ktest: Creating greeting...\n");
     }
 
-    char *greeting = cstart_create_greeting(opts.name);
+    char *greeting = ktest_create_greeting(opts.name);
 
     printf("%s\n", greeting);
 

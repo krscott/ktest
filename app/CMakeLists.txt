@@ -1,5 +1,5 @@
-add_executable(c-start-app main.c)
+add_executable(ktest-app main.c)
 
-target_link_libraries(c-start-app cstart libkcli.a)
+target_link_libraries(ktest-app ktest libkcli.a)
 
-install(TARGETS c-start-app)
+install(TARGETS ktest-app)

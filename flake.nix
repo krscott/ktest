@@ -36,7 +36,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
 
         # Final derivation including any overrides made to output package
-        inherit (self.packages.${system}) c-start c-start-gcc;
+        inherit (self.packages.${system}) ktest ktest-gcc;
 
         devPkgs =
           with pkgs;
@@ -46,7 +46,7 @@
             clang-tools # NOTE: clang-tools must come before clang
             clang
           ]
-          ++ c-start.buildInputs;
+          ++ ktest.buildInputs;
 
         mkApp = text: {
           type = "app";
@@ -61,33 +61,33 @@
       in
       {
         packages = {
-          c-start = pkgs.callPackage ./. {
+          ktest = pkgs.callPackage ./. {
             inherit (kcli.packages.${system}) kcli;
             inherit (ktl.packages.${system}) ktl;
             stdenv = pkgs.clangStdenv;
           };
 
-          c-start-gcc = c-start.override {
+          ktest-gcc = ktest.override {
             inherit (pkgs) stdenv;
           };
 
-          c-start-win = c-start.override {
+          ktest-win = ktest.override {
             inherit (pkgs.pkgsCross.mingwW64) stdenv;
           };
 
-          default = c-start;
+          default = ktest;
 
-          c-start-test = c-start.override {
+          ktest-test = ktest.override {
             doCheck = true;
           };
-          c-start-gcc-test = c-start-gcc.override {
+          ktest-gcc-test = ktest-gcc.override {
             doCheck = true;
           };
         };
 
         devShells = {
           default = pkgs.mkShell {
-            inputsFrom = [ c-start ];
+            inputsFrom = [ ktest ];
             nativeBuildInputs = devPkgs;
             shellHook = ''
               source dev_shell.sh
