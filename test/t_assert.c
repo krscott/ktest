@@ -1,5 +1,4 @@
-#include "kcli.h"
-#include "ktest.h"
+#include "ktest.inc"
 #include <assert.h>
 #include <string.h>
 

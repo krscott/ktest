@@ -1,4 +1,4 @@
-#include "ktest.h"
+#include "ktest.inc"
 
 KTEST_MAIN
 {
