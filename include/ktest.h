@@ -90,7 +90,7 @@ static inline void ktest_assert_fail(
         if (!(cond))                                                           \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
-            ktest_infof("  Condition failed: `%s`", cond);                     \
+            ktest_info("  Condition failed: `" #cond "`");                     \
             continue;                                                          \
         }                                                                      \
     }                                                                          \

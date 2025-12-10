@@ -1,6 +1,7 @@
 #include "ktest.h" // IWYU pragma: export
 
 #include "kcli.inc" // IWYU pragma: export
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -127,6 +128,9 @@ bool ktest_define_test(struct ktest_state *const state, char const *const name)
                 case KTEST_CMD_LIST:
                     run_this = false;
                     printf("%s\n", name);
+                    break;
+                default:
+                    assert(false);
                     break;
             }
         }

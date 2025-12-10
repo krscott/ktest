@@ -27,16 +27,6 @@ stdenv.mkDerivation {
   '';
 
   installPhase = ''
-    if [[ "$CC" == *"mingw32"* ]]; then
-      # Workaround broken pkgCross cmake install
-      mkdir -p "$out/bin"
-      cp build/app/*.exe "$out/bin"
-      mkdir -p "$out/lib"
-      cp build/src/*.a "$out/lib"
-    else
-      cmake --install build --prefix $out
-    fi
-
     mkdir -p "$out/include"
     cp -r include "$out"
   '';
