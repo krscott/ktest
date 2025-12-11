@@ -2,9 +2,8 @@
 #define KTEST_H_
 
 #include <assert.h>
-#include <math.h>
+#include <math.h> // IWYU pragma: export
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 
 enum ktest_cmd
@@ -146,10 +145,10 @@ static inline void ktest_str_cmp(char const *left, char const *right)
     }                                                                          \
     static_assert(1, "")
 
-static inline void ktest_int_cmp(int64_t left, int64_t right)
+static inline void ktest_int_cmp(long long left, long long right)
 {
-    ktest_infof("    Left : %ld", left);
-    ktest_infof("    Right: %ld", right);
+    ktest_infof("    Left : %lld", left);
+    ktest_infof("    Right: %lld", right);
 }
 
 #define ASSERT_INT_EQ(left, right)                                             \
@@ -158,7 +157,7 @@ static inline void ktest_int_cmp(int64_t left, int64_t right)
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected equal ints: " #left " == " #right);         \
-            ktest_int_cmp((int64_t)(left), (int64_t)(right));                  \
+            ktest_int_cmp((long long)(left), (long long)(right));              \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
@@ -170,16 +169,17 @@ static inline void ktest_int_cmp(int64_t left, int64_t right)
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected unequal ints: " #left " != " #right);       \
-            ktest_int_cmp((int64_t)(left), (int64_t)(right));                  \
+            ktest_int_cmp((long long)(left), (long long)(right));              \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
     static_assert(1, "")
 
-static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
+static inline void
+ktest_uint_cmp(unsigned long long left, unsigned long long right)
 {
-    ktest_infof("    Left : %lu", left);
-    ktest_infof("    Right: %lu", right);
+    ktest_infof("    Left : %llu", left);
+    ktest_infof("    Right: %llu", right);
 }
 
 #define ASSERT_UINT_EQ(left, right)                                            \
@@ -188,7 +188,10 @@ static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected equal uints: " #left " == " #right);        \
-            ktest_uint_cmp((uint64_t)(left), (uint64_t)(right));               \
+            ktest_uint_cmp(                                                    \
+                (unsigned long long)(left),                                    \
+                (unsigned long long)(right)                                    \
+            );                                                                 \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
@@ -200,7 +203,10 @@ static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected unequal uints: " #left " != " #right);      \
-            ktest_uint_cmp((uint64_t)(left), (uint64_t)(right));               \
+            ktest_uint_cmp(                                                    \
+                (unsigned long long)(left),                                    \
+                (unsigned long long)(right)                                    \
+            );                                                                 \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
