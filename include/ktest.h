@@ -2,6 +2,7 @@
 #define KTEST_H_
 
 #include <assert.h>
+#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -153,7 +154,7 @@ static inline void ktest_int_cmp(int64_t left, int64_t right)
 
 #define ASSERT_INT_EQ(left, right)                                             \
     {                                                                          \
-        if (left != right)                                                     \
+        if ((left) != (right))                                                 \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected equal ints: " #left " == " #right);         \
@@ -165,7 +166,7 @@ static inline void ktest_int_cmp(int64_t left, int64_t right)
 
 #define ASSERT_INT_NEQ(left, right)                                            \
     {                                                                          \
-        if (left == right)                                                     \
+        if ((left) == (right))                                                 \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected unequal ints: " #left " != " #right);       \
@@ -183,7 +184,7 @@ static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
 
 #define ASSERT_UINT_EQ(left, right)                                            \
     {                                                                          \
-        if (left != right)                                                     \
+        if ((left) != (right))                                                 \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected equal uints: " #left " == " #right);        \
@@ -195,7 +196,7 @@ static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
 
 #define ASSERT_UINT_NEQ(left, right)                                           \
     {                                                                          \
-        if (left == right)                                                     \
+        if ((left) == (right))                                                 \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected unequal uints: " #left " != " #right);      \
@@ -215,7 +216,7 @@ static inline void ktest_float_cmp(double left, double right)
 
 #define ASSERT_FLOAT_APPROX(left, right, epsilon)                              \
     {                                                                          \
-        if (left < right + epsilon && right < left + epsilon)                  \
+        if (fabs((left) - (right)) > epsilon)                                  \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected approx floats: " #left " ~ " #right);       \
@@ -227,7 +228,7 @@ static inline void ktest_float_cmp(double left, double right)
 
 #define ASSERT_FLOAT_NOT_APPROX(left, right, epsilon)                          \
     {                                                                          \
-        if (left > right + epsilon || right > left + epsilon)                  \
+        if (fabs((left) - (right)) <= epsilon)                                 \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
             ktest_info("  Expected not approx floats: " #left " !~ " #right);  \
