@@ -15,7 +15,7 @@ int main(void)
     int result = ktest_end(&state);
 
     assert(result == 1);
-    assert(state.fail_count == 4);
+    assert(state.fail_count == 6);
     assert(
         state.first_failed_test_name &&
         0 == strcmp(state.first_failed_test_name, "t_int_eq_fail")
@@ -58,5 +58,24 @@ static void ktest__main(struct ktest_state *ktest_state)
     KTEST(t_uint_neq_fail)
     {
         ASSERT_UINT_NEQ(1, 1);
+    }
+
+    KTEST(t_double_eq_pass)
+    {
+        ASSERT_FLOAT_APPROX(1.001, 0.999, 0.1);
+        ASSERT_FLOAT_APPROX(-0.5, -0.5, 0.001);
+    }
+    KTEST(t_double_eq_fail)
+    {
+        ASSERT_FLOAT_APPROX(1.001, 0.999, 0.0001);
+    }
+
+    KTEST(t_double_neq_pass)
+    {
+        ASSERT_FLOAT_NOT_APPROX(1.0, 2.0, 0.1);
+    }
+    KTEST(t_double_neq_fail)
+    {
+        ASSERT_FLOAT_NOT_APPROX(10.0, 10.01, 0.1);
     }
 }

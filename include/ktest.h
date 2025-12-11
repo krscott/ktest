@@ -206,3 +206,33 @@ static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
     static_assert(1, "")
 
 #endif
+
+static inline void ktest_float_cmp(double left, double right)
+{
+    ktest_infof("    Left : %f", left);
+    ktest_infof("    Right: %f", right);
+}
+
+#define ASSERT_FLOAT_APPROX(left, right, epsilon)                              \
+    {                                                                          \
+        if (left < right + epsilon && right < left + epsilon)                  \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected approx floats: " #left " ~ " #right);       \
+            ktest_float_cmp((double)(left), (double)(right));                  \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
+#define ASSERT_FLOAT_NOT_APPROX(left, right, epsilon)                          \
+    {                                                                          \
+        if (left > right + epsilon || right > left + epsilon)                  \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected not approx floats: " #left " !~ " #right);  \
+            ktest_float_cmp((double)(left), (double)(right));                  \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
