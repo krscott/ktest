@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 
 enum ktest_cmd
@@ -123,7 +124,7 @@ static inline void ktest_str_cmp(char const *left, char const *right)
         if (!left_ || !right_ || 0 != strcmp(left_, right_))                   \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
-            ktest_info("  Expected equal strings:");                           \
+            ktest_info("  Expected equal strings: " #left " == " #right);      \
             ktest_str_cmp(left_, right_);                                      \
             continue;                                                          \
         }                                                                      \
@@ -137,8 +138,38 @@ static inline void ktest_str_cmp(char const *left, char const *right)
         if (!left_ || !right_ || 0 == strcmp(left_, right_))                   \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
-            ktest_info("  Expected unequal strings:");                         \
+            ktest_info("  Expected unequal strings: " #left " != " #right);    \
             ktest_str_cmp(left_, right_);                                      \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
+static inline void ktest_int_cmp(int64_t left, int64_t right)
+{
+    ktest_infof("    Left : %ld", left);
+    ktest_infof("    Right: %ld", right);
+}
+
+#define ASSERT_INT_EQ(left, right)                                             \
+    {                                                                          \
+        if (left != right)                                                     \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected equal ints: " #left " == " #right);         \
+            ktest_int_cmp((int64_t)(left), (int64_t)(right));                  \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
+#define ASSERT_INT_NEQ(left, right)                                            \
+    {                                                                          \
+        if (left == right)                                                     \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected unequal ints: " #left " != " #right);       \
+            ktest_int_cmp((int64_t)(left), (int64_t)(right));                  \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
