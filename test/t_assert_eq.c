@@ -15,7 +15,7 @@ int main(void)
     int result = ktest_end(&state);
 
     assert(result == 1);
-    assert(state.fail_count == 2);
+    assert(state.fail_count == 4);
     assert(
         state.first_failed_test_name &&
         0 == strcmp(state.first_failed_test_name, "t_int_eq_fail")
@@ -26,7 +26,7 @@ static void ktest__main(struct ktest_state *ktest_state)
 {
     KTEST(t_int_eq_pass)
     {
-        ASSERT_INT_EQ(100, 100);
+        ASSERT_INT_EQ(-100, -100);
     }
     KTEST(t_int_eq_fail)
     {
@@ -39,6 +39,24 @@ static void ktest__main(struct ktest_state *ktest_state)
     }
     KTEST(t_int_neq_fail)
     {
-        ASSERT_INT_NEQ(1, 1);
+        ASSERT_INT_NEQ(-1, -1);
+    }
+
+    KTEST(t_uint_eq_pass)
+    {
+        ASSERT_UINT_EQ(100, 100);
+    }
+    KTEST(t_uint_eq_fail)
+    {
+        ASSERT_UINT_EQ(0, 100);
+    }
+
+    KTEST(t_uint_neq_pass)
+    {
+        ASSERT_UINT_NEQ(123, 124);
+    }
+    KTEST(t_uint_neq_fail)
+    {
+        ASSERT_UINT_NEQ(1, 1);
     }
 }

@@ -175,4 +175,34 @@ static inline void ktest_int_cmp(int64_t left, int64_t right)
     }                                                                          \
     static_assert(1, "")
 
+static inline void ktest_uint_cmp(uint64_t left, uint64_t right)
+{
+    ktest_infof("    Left : %lu", left);
+    ktest_infof("    Right: %lu", right);
+}
+
+#define ASSERT_UINT_EQ(left, right)                                            \
+    {                                                                          \
+        if (left != right)                                                     \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected equal uints: " #left " == " #right);        \
+            ktest_uint_cmp((uint64_t)(left), (uint64_t)(right));               \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
+#define ASSERT_UINT_NEQ(left, right)                                           \
+    {                                                                          \
+        if (left == right)                                                     \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Expected unequal uints: " #left " != " #right);      \
+            ktest_uint_cmp((uint64_t)(left), (uint64_t)(right));               \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+
 #endif
