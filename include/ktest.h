@@ -91,7 +91,19 @@ static inline void ktest_assert_fail(
         if (!(cond))                                                           \
         {                                                                      \
             ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
-            ktest_info("  Condition failed: `" #cond "`");                     \
+            ktest_info("  Expected condition: `" #cond "`");                   \
+            continue;                                                          \
+        }                                                                      \
+    }                                                                          \
+    static_assert(1, "")
+#define ASSERT(cond) ASSERT_TRUE(cond)
+
+#define ASSERT_FALSE(cond)                                                     \
+    {                                                                          \
+        if (cond)                                                              \
+        {                                                                      \
+            ktest_assert_fail(ktest_state, __FILE__, __LINE__);                \
+            ktest_info("  Unexpected condition: `" #cond "`");                 \
             continue;                                                          \
         }                                                                      \
     }                                                                          \
