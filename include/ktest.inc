@@ -14,7 +14,7 @@ ktest_opts_parse(int const argc, char const *const *const argv)
         argc,
         argv,
         {
-            .pos_name = "name",
+            .name = "name",
             .ptr_str = &opts.name,
             .optional = true,
             .help = "Run single test by name",
