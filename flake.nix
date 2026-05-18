@@ -2,11 +2,6 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-
-    kcli = {
-      url = "github:krscott/kcli";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs =
@@ -14,7 +9,6 @@
       self,
       nixpkgs,
       flake-utils,
-      kcli,
     }:
     let
       supportedSystems = [
@@ -56,7 +50,6 @@
       {
         packages = {
           ktest = pkgs.callPackage ./. {
-            inherit (kcli.packages.${system}) kcli;
             stdenv = pkgs.clangStdenv;
           };
 

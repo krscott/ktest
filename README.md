@@ -27,6 +27,15 @@ cmake -B build
 cmake --build build
 ```
 
+Test runtime options are configured with environment variables:
+```
+KTEST_NAME=t_example KTEST_VERBOSE=1 ./build/test/t_smoke
+KTEST_LIST=1 ./build/test/t_smoke
+KTEST_STOP_ON_FAIL=1 ctest --test-dir build/test
+```
+
+Flag variables are enabled by any non-empty value except `0` or `false`.
+
 Useful development shell aliases
 ```
 source dev_shell.sh

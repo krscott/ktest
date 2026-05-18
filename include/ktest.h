@@ -34,7 +34,7 @@ struct ktest_state
 };
 
 struct ktest_opts
-ktest_opts_parse(int const argc, char const *const *const argv);
+ktest_opts_parse(void);
 void ktest_complete_test(struct ktest_state *const state);
 bool ktest_define_test(struct ktest_state *const state, char const *const name);
 int ktest_end(struct ktest_state const *const state);
@@ -61,9 +61,9 @@ int ktest_end(struct ktest_state const *const state);
 #define KTEST_MAIN                                                             \
     static void ktest__main(struct ktest_state *ktest_state);                  \
                                                                                \
-    int main(int const argc, char const *const *const argv)                    \
+    int main(void)                                                             \
     {                                                                          \
-        struct ktest_state state = {.opts = ktest_opts_parse(argc, argv)};     \
+        struct ktest_state state = {.opts = ktest_opts_parse()};               \
                                                                                \
         ktest__main(&state);                                                   \
                                                                                \

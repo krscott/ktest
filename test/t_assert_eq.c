@@ -6,9 +6,7 @@ static void ktest__main(struct ktest_state *ktest_state);
 
 int main(void)
 {
-    char const *argv[] = {"test", "-v"};
-    int argc = KCLI_COUNTOF(argv);
-    struct ktest_state state = {.opts = ktest_opts_parse(argc, argv)};
+    struct ktest_state state = {.opts = ktest_opts_parse()};
 
     ktest__main(&state);
 

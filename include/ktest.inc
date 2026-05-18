@@ -1,45 +1,30 @@
 #include "ktest.h" // IWYU pragma: export
 
-#include "kcli.inc" // IWYU pragma: export
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-struct ktest_opts
-ktest_opts_parse(int const argc, char const *const *const argv)
+static bool ktest_env_flag(char const *const name)
 {
-    struct ktest_opts opts = {.cmd = KTEST_CMD_RUN_ALL};
+    char const *const value = getenv(name);
 
-    KCLI_PARSE(
-        argc,
-        argv,
-        {
-            .name = "name",
-            .ptr_str = &opts.name,
-            .optional = true,
-            .help = "Run single test by name",
-        },
-        {
-            .short_name = 's',
-            .long_name = "stop-on-fail",
-            .ptr_flag = &opts.stop_on_fail,
-            .help = "Stop tests on first failure",
-        },
-        {
-            .short_name = 'l',
-            .long_name = "list",
-            .ptr_flag = &opts.list,
-            .help = "List tests",
-        },
-        {
-            .short_name = 'v',
-            .long_name = "verbose",
-            .ptr_flag = &opts.verbose,
-            .help = "Enable extra logging",
-        },
-    );
+    return value && value[0] && 0 != strcmp(value, "0") &&
+           0 != strcmp(value, "false");
+}
 
-    if (opts.name)
+struct ktest_opts
+ktest_opts_parse(void)
+{
+    struct ktest_opts opts = {
+        .cmd = KTEST_CMD_RUN_ALL,
+        .name = getenv("KTEST_NAME"),
+        .stop_on_fail = ktest_env_flag("KTEST_STOP_ON_FAIL"),
+        .list = ktest_env_flag("KTEST_LIST"),
+        .verbose = ktest_env_flag("KTEST_VERBOSE"),
+    };
+
+    if (opts.name && opts.name[0])
     {
         opts.cmd = KTEST_CMD_RUN_ONE;
     }
