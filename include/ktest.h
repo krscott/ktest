@@ -33,8 +33,7 @@ struct ktest_state
     int fail_count;
 };
 
-struct ktest_opts
-ktest_opts_parse(void);
+struct ktest_opts ktest_opts_parse(void);
 void ktest_complete_test(struct ktest_state *const state);
 bool ktest_define_test(struct ktest_state *const state, char const *const name);
 int ktest_end(struct ktest_state const *const state);
