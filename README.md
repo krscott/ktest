@@ -1,13 +1,22 @@
 # ktest
 
-My rather opinionated C project template.
+A small header-only C test harness.
 
-To start a project with this template, run:
-```
-./init-template.sh new_project_name
-```
+Tests are regular C executables that include `ktest.inc`, define `KTEST_MAIN`,
+and declare tests with `KTEST(name)`.
 
-Don't forget to change the [LICENSE](https://choosealicense.com/).
+```c
+#include "ktest.inc"
+
+KTEST_MAIN
+{
+    KTEST(t_example)
+    {
+        ASSERT_TRUE(true);
+        ASSERT_INT_EQ(1 + 1, 2);
+    }
+}
+```
 
 ## Development
 
