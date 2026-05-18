@@ -10,9 +10,6 @@ stdenv.mkDerivation {
   inherit doCheck;
 
   nativeBuildInputs = [ cmake ];
-
-  buildInputs = [ ];
-
   configurePhase = ''
     cmake -B build
   '';

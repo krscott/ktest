@@ -33,6 +33,7 @@
             cmake-format
             clang-tools # NOTE: clang-tools must come before clang
             clang
+            just
           ]
           ++ ktest.buildInputs;
 
@@ -75,9 +76,6 @@
           default = pkgs.mkShell {
             inputsFrom = [ ktest ];
             nativeBuildInputs = devPkgs;
-            shellHook = ''
-              source dev_shell.sh
-            '';
           };
         };
 

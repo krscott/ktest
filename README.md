@@ -16,7 +16,7 @@ Update dependencies
 nix flake update
 ```
 
-Requires CMake and a C11 compiler. A nix dev shell is available:
+Requires CMake and a C11 compiler. `just` is optional for development shortcuts. A nix dev shell is available:
 ```
 nix develop
 ```
@@ -36,18 +36,20 @@ KTEST_STOP_ON_FAIL=1 ctest --test-dir build/test
 
 Flag variables are enabled by any non-empty value except `0` or `false`.
 
-Useful development shell aliases
+Useful development commands
 ```
-source dev_shell.sh
-
 # Reconfigure cmake
-cfg
+just configure
 
 # Build and run
-run
+just run
+
+# Configure release or unoptimized debug
+just configure release
+just configure o0
 
 # Setup vscode debugging
-setup_vscode
+just setup-vscode
 ```
 
 ### Debugging
