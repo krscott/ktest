@@ -44,9 +44,16 @@ just configure
 # Build and test
 just test
 
+# Format all files or only git-changed files
+just format
+just format diff
+
 # Configure release or unoptimized debug
 just configure release
 just configure o0
+
+# Install the local pre-commit formatting hook
+just git-hooks
 
 # Setup vscode debugging
 just setup-vscode

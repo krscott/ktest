@@ -45,6 +45,34 @@ setup-vscode:
     mkdir -p .vscode/
     cp dev/vscode/* .vscode/
 
-# Format source files.
-format:
-    ./format.sh
+# Format source files. Use `just format diff` for git-changed files only.
+format mode="all":
+    ./format.sh "{{ mode }}"
+
+# Install a pre-commit hook that formats git-changed files.
+git-hooks:
+    #!/usr/bin/env sh
+    set -eu
+
+    hook=.git/hooks/pre-commit
+
+    if [ -e "$hook" ]; then
+        printf '%s already exists; not overwriting\n' "$hook" >&2
+        exit 1
+    fi
+
+    mkdir -p .git/hooks
+    cat > "$hook" <<'EOF'
+    #!/usr/bin/env sh
+    set -eu
+
+    staged_files=$(git diff --cached --name-only --diff-filter=ACMR)
+
+    just format diff
+
+    if [ -n "$staged_files" ] && ! git diff --quiet -- $staged_files; then
+        printf 'pre-commit formatted files. Review and stage the changes, then commit again.\n' >&2
+        exit 1
+    fi
+    EOF
+    chmod +x "$hook"
