@@ -2,10 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug LLDB",
+            "name": "Debug t_smoke",
             "type": "lldb-dap",
             "request": "launch",
-            "program": "build/src/ktest-app",
+            "program": "build/test/t_smoke",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopOnEntry": false,

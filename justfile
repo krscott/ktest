@@ -36,10 +36,6 @@ build:
     cmake --build build
     if [ -f build/compile_commands.json ]; then mkdir -p .compile-db && cp build/compile_commands.json .compile-db; fi
 
-# Build and run the app.
-run *args: build
-    ./build/app/ktest-app "$@"
-
 # Build and run tests.
 test *args: build
     ctest --test-dir build/test --output-on-failure --verbose "$@"

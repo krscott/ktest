@@ -41,8 +41,8 @@ Useful development commands
 # Reconfigure cmake
 just configure
 
-# Build and run
-just run
+# Build and test
+just test
 
 # Configure release or unoptimized debug
 just configure release
